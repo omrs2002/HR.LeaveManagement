@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HR.LeaveManagement.Application.Exceptions;
 using HR.LeaveManagement.Application.Features.LeaveRequests.Requests.Commands;
 using HR.LeaveManagement.Application.Features.LeaveTypes.Requests.Commands;
 using HR.LeaveManagement.Application.Persistence.Contracts;
@@ -27,8 +28,8 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
         {
             var leaveRequest = await _unitOfWork.LeaveRequestRepository.Get(request.Id);
 
-            //if (leaveRequest == null)
-            //    throw new NotFoundException(nameof(LeaveRequest), request.Id);
+            if (leaveRequest == null)
+                throw new NotFoundException(nameof(LeaveRequest), request.Id);
 
             await _unitOfWork.LeaveRequestRepository.Delete(leaveRequest);
             await _unitOfWork.Save();

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using HR.LeaveManagement.Application.DTOs.LeaveRequest.Validators;
+using HR.LeaveManagement.Application.Exceptions;
 using HR.LeaveManagement.Application.Features.LeaveRequests.Requests.Commands;
 using HR.LeaveManagement.Application.Features.LeaveTypes.Requests.Commands;
 using HR.LeaveManagement.Application.Persistence.Contracts;
@@ -29,15 +31,16 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
         {
             var leaveRequest = await _unitOfWork.LeaveRequestRepository.Get(request.Id);
 
-            //if(leaveRequest is null)
-            //    throw new NotFoundException(nameof(leaveRequest), request.Id);
+            if (leaveRequest is null)
+                throw new NotFoundException(nameof(leaveRequest), request.Id);
 
             if (request.LeaveRequestDto != null)
             {
-                //var validator = new UpdateLeaveRequestDtoValidator(_unitOfWork.LeaveTypeRepository);
-                //var validationResult = await validator.ValidateAsync(request.LeaveRequestDto);
-                //if (validationResult.IsValid == false)
-                //    throw new ValidationException(validationResult);
+                var validator = new UpdateLeaveRequestDtoValidator(_unitOfWork.LeaveTypeRepository);
+                var validationResult = await validator.ValidateAsync(request.LeaveRequestDto);
+
+                if (validationResult.IsValid == false)
+                    throw new ValidationException(validationResult);
 
                 _mapper.Map(request.LeaveRequestDto, leaveRequest);
 

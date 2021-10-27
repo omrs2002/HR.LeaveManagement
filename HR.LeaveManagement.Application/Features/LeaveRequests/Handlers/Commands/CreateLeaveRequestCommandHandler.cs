@@ -10,10 +10,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using HR.LeaveManagement.Application.Persistence.Contracts;
+using HR.LeaveManagement.Application.Features.LeaveRequests.Requests.Commands;
+using HR.LeaveManagement.Application.DTOs.LeaveRequest.Validators;
 
 namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Commands
 {
-/*
+
     public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveRequestCommand, BaseCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -38,24 +40,23 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
             var response = new BaseCommandResponse();
             var validator = new CreateLeaveRequestDtoValidator(_unitOfWork.LeaveTypeRepository);
             var validationResult = await validator.ValidateAsync(request.LeaveRequestDto);
-            var userId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(
-                    q => q.Type == CustomClaimTypes.Uid)?.Value;
+            //var userId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault( q => q.Type == CustomClaimTypes.Uid)?.Value;
 
-            var allocation = await _unitOfWork.LeaveAllocationRepository.GetUserAllocations(userId, request.LeaveRequestDto.LeaveTypeId);
-            if(allocation is null)
-            {
-                validationResult.Errors.Add(new FluentValidation.Results.ValidationFailure(nameof(request.LeaveRequestDto.LeaveTypeId),
-                    "You do not have any allocations for this leave type."));
-            }
-            else
-            {
-                int daysRequested = (int)(request.LeaveRequestDto.EndDate - request.LeaveRequestDto.StartDate).TotalDays;
-                if (daysRequested > allocation.NumberOfDays)
-                {
-                    validationResult.Errors.Add(new FluentValidation.Results.ValidationFailure(
-                        nameof(request.LeaveRequestDto.EndDate), "You do not have enough days for this request"));
-                }
-            }
+            //var allocation = await _unitOfWork.LeaveAllocationRepository.GetUserAllocations(userId, request.LeaveRequestDto.LeaveTypeId);
+            //if(allocation is null)
+            //{
+            //    validationResult.Errors.Add(new FluentValidation.Results.ValidationFailure(nameof(request.LeaveRequestDto.LeaveTypeId),
+            //        "You do not have any allocations for this leave type."));
+            //}
+            //else
+            //{
+            //    int daysRequested = (int)(request.LeaveRequestDto.EndDate - request.LeaveRequestDto.StartDate).TotalDays;
+            //    if (daysRequested > allocation.NumberOfDays)
+            //    {
+            //        validationResult.Errors.Add(new FluentValidation.Results.ValidationFailure(
+            //            nameof(request.LeaveRequestDto.EndDate), "You do not have enough days for this request"));
+            //    }
+            //}
             
             if (validationResult.IsValid == false)
             {
@@ -66,7 +67,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
             else
             {
                 var leaveRequest = _mapper.Map<LeaveRequest>(request.LeaveRequestDto);
-                leaveRequest.RequestingEmployeeId = userId;
+                //leaveRequest.RequestingEmployeeId = userId;
                 leaveRequest = await _unitOfWork.LeaveRequestRepository.Add(leaveRequest);
                 await _unitOfWork.Save();
 
@@ -76,17 +77,17 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
 
                 try
                 {
-                    var emailAddress = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value;
+                    //var emailAddress = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value;
 
-                    var email = new Email
-                    {
-                        To = emailAddress,
-                        Body = $"Your leave request for {request.LeaveRequestDto.StartDate:D} to {request.LeaveRequestDto.EndDate:D} " +
-                        $"has been submitted successfully.",
-                        Subject = "Leave Request Submitted"
-                    };
+                    //var email = new Email
+                    //{
+                    //    To = emailAddress,
+                    //    Body = $"Your leave request for {request.LeaveRequestDto.StartDate:D} to {request.LeaveRequestDto.EndDate:D} " +
+                    //    $"has been submitted successfully.",
+                    //    Subject = "Leave Request Submitted"
+                    //};
 
-                    await _emailSender.SendEmail(email);
+                    //await _emailSender.SendEmail(email);
                 }
                 catch (Exception ex)
                 {
@@ -96,5 +97,5 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
             
             return response;
         }
-    }*/
+    }
 }
