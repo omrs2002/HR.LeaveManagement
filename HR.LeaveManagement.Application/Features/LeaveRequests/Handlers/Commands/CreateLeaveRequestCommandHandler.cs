@@ -12,6 +12,8 @@ using System.Security.Claims;
 using HR.LeaveManagement.Application.Persistence.Contracts;
 using HR.LeaveManagement.Application.Features.LeaveRequests.Requests.Commands;
 using HR.LeaveManagement.Application.DTOs.LeaveRequest.Validators;
+using HR.LeaveManagement.Application.Contracts.Infrastructure;
+using HR.LeaveManagement.Application.Models;
 
 namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Commands
 {
@@ -19,18 +21,18 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
     public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveRequestCommand, BaseCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
-        //private readonly IEmailSender _emailSender;
+        private readonly IEmailSender _emailSender;
         //private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
         public CreateLeaveRequestCommandHandler(
             IUnitOfWork unitOfWork,
-            //IEmailSender emailSender,
+            IEmailSender emailSender,
             //IHttpContextAccessor httpContextAccessor,
             IMapper mapper)
         {
             this._unitOfWork = unitOfWork;
-            //_emailSender = emailSender;
+            _emailSender = emailSender;
             //this._httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
@@ -79,15 +81,16 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
                 {
                     //var emailAddress = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value;
 
-                    //var email = new Email
-                    //{
-                    //    To = emailAddress,
-                    //    Body = $"Your leave request for {request.LeaveRequestDto.StartDate:D} to {request.LeaveRequestDto.EndDate:D} " +
-                    //    $"has been submitted successfully.",
-                    //    Subject = "Leave Request Submitted"
-                    //};
+                    var email = new Email
+                    {
+                        //To = emailAddress,
+                        To = "omrs2002@yahoo.com",
+                        Body = $"Your leave request for {request.LeaveRequestDto.StartDate:D} to {request.LeaveRequestDto.EndDate:D} " +
+                        $"has been submitted successfully.",
+                        Subject = "Leave Request Submitted"
+                    };
 
-                    //await _emailSender.SendEmail(email);
+                    await _emailSender.SendEmail(email);
                 }
                 catch (Exception ex)
                 {
