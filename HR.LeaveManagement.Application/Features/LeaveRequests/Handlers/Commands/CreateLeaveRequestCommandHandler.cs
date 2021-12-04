@@ -20,18 +20,18 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
 
     public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveRequestCommand, BaseCommandResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        //private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailSender _emailSender;
         //private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
         public CreateLeaveRequestCommandHandler(
-            IUnitOfWork unitOfWork,
+            //IUnitOfWork unitOfWork,
             IEmailSender emailSender,
             //IHttpContextAccessor httpContextAccessor,
             IMapper mapper)
         {
-            this._unitOfWork = unitOfWork;
+            //this._unitOfWork = unitOfWork;
             _emailSender = emailSender;
             //this._httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
@@ -40,8 +40,8 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
         public async Task<BaseCommandResponse> Handle(CreateLeaveRequestCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            var validator = new CreateLeaveRequestDtoValidator(_unitOfWork.LeaveTypeRepository);
-            var validationResult = await validator.ValidateAsync(request.LeaveRequestDto);
+            //var validator = new CreateLeaveRequestDtoValidator(_unitOfWork.LeaveTypeRepository);
+            //var validationResult = await validator.ValidateAsync(request.LeaveRequestDto);
             //var userId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault( q => q.Type == CustomClaimTypes.Uid)?.Value;
 
             //var allocation = await _unitOfWork.LeaveAllocationRepository.GetUserAllocations(userId, request.LeaveRequestDto.LeaveTypeId);
@@ -60,43 +60,43 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
             //    }
             //}
             
-            if (validationResult.IsValid == false)
-            {
-                response.Success = false;
-                response.Message = "Request Failed";
-                response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
-            }
-            else
-            {
-                var leaveRequest = _mapper.Map<LeaveRequest>(request.LeaveRequestDto);
-                //leaveRequest.RequestingEmployeeId = userId;
-                leaveRequest = await _unitOfWork.LeaveRequestRepository.Add(leaveRequest);
-                await _unitOfWork.Save();
+            //if (validationResult.IsValid == false)
+            //{
+            //    response.Success = false;
+            //    response.Message = "Request Failed";
+            //    response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
+            //}
+            //else
+            //{
+            //    var leaveRequest = _mapper.Map<LeaveRequest>(request.LeaveRequestDto);
+            //    //leaveRequest.RequestingEmployeeId = userId;
+            //    leaveRequest = await _unitOfWork.LeaveRequestRepository.Add(leaveRequest);
+            //    await _unitOfWork.Save();
 
-                response.Success = true;
-                response.Message = "Request Created Successfully";
-                response.Id = leaveRequest.Id;
+            //    response.Success = true;
+            //    response.Message = "Request Created Successfully";
+            //    response.Id = leaveRequest.Id;
 
-                try
-                {
-                    //var emailAddress = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value;
+            //    try
+            //    {
+            //        //var emailAddress = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value;
 
-                    var email = new Email
-                    {
-                        //To = emailAddress,
-                        To = "omrs2002@yahoo.com",
-                        Body = $"Your leave request for {request.LeaveRequestDto.StartDate:D} to {request.LeaveRequestDto.EndDate:D} " +
-                        $"has been submitted successfully.",
-                        Subject = "Leave Request Submitted"
-                    };
+            //        var email = new Email
+            //        {
+            //            //To = emailAddress,
+            //            To = "omrs2002@yahoo.com",
+            //            Body = $"Your leave request for {request.LeaveRequestDto.StartDate:D} to {request.LeaveRequestDto.EndDate:D} " +
+            //            $"has been submitted successfully.",
+            //            Subject = "Leave Request Submitted"
+            //        };
 
-                    await _emailSender.SendEmail(email);
-                }
-                catch (Exception ex)
-                {
-                    //// Log or handle error, but don't throw...
-                }
-            }
+            //        await _emailSender.SendEmail(email);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        //// Log or handle error, but don't throw...
+            //    }
+            //}
             
             return response;
         }
