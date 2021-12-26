@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,9 @@ namespace HR.LeaveManagement.Application
     {
         public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
         {
- 
             //register every mapping profile
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            //services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(Assembly.GetExecutingAssembly());
 
             return services;
         }
