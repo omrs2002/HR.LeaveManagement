@@ -20,6 +20,7 @@ namespace HR.LeaveManagement.Persistence.Repositories
         public async Task<T> Add(T entity)
         {
             await _dbContext.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
             return entity;
         }
 
@@ -48,8 +49,6 @@ namespace HR.LeaveManagement.Persistence.Repositories
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
-
-
     }
 
 }
