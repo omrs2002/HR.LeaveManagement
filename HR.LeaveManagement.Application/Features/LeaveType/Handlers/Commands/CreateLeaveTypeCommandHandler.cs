@@ -33,7 +33,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveType.Handlers.Commands
         {
             var response = new BaseCommandResponse();
             var validator = new CreateLeaveTypeDtoValidator();
-            var validationResult = await validator.ValidateAsync(request.LeaveTypeDto);
+            var validationResult = await validator.ValidateAsync(request.LeaveTypeDto, cancellationToken);
 
             if (validationResult.IsValid == false)
             {
