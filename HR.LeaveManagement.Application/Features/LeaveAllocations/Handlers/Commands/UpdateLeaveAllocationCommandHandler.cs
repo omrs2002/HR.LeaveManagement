@@ -16,35 +16,37 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Handlers.Comm
 {
     public class UpdateLeaveAllocationCommandHandler : IRequestHandler<UpdateLeaveAllocationCommand, Unit>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        //private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
         public UpdateLeaveAllocationCommandHandler(
-            IUnitOfWork unitOfWork,
+            //IUnitOfWork unitOfWork,
             IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            //_unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateLeaveAllocationCommand request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateLeaveAllocationDtoValidator(_unitOfWork.LeaveTypeRepository);
-            var validationResult = await validator.ValidateAsync(request.LeaveAllocationDto);
 
-            if (validationResult.IsValid == false)
-                throw new ValidationException(validationResult);
+            throw new NotImplementedException();
+            //var validator = new UpdateLeaveAllocationDtoValidator(_unitOfWork.LeaveTypeRepository);
+            //var validationResult = await validator.ValidateAsync(request.LeaveAllocationDto);
 
-            var leaveAllocation = await _unitOfWork.LeaveAllocationRepository.Get(request.LeaveAllocationDto.Id);
+            //if (validationResult.IsValid == false)
+            //    throw new ValidationException(validationResult);
 
-            if (leaveAllocation is null)
-                throw new NotFoundException(nameof(leaveAllocation), request.LeaveAllocationDto.Id);
+            //var leaveAllocation = await _unitOfWork.LeaveAllocationRepository.Get(request.LeaveAllocationDto.Id);
 
-            _mapper.Map(request.LeaveAllocationDto, leaveAllocation);
+            //if (leaveAllocation is null)
+            //    throw new NotFoundException(nameof(leaveAllocation), request.LeaveAllocationDto.Id);
 
-            await _unitOfWork.LeaveAllocationRepository.Update(leaveAllocation);
-            await _unitOfWork.Save();
-            return Unit.Value;
+            //_mapper.Map(request.LeaveAllocationDto, leaveAllocation);
+
+            //await _unitOfWork.LeaveAllocationRepository.Update(leaveAllocation);
+            //await _unitOfWork.Save();
+            //return Unit.Value;
         }
     }
 }

@@ -1,4 +1,8 @@
 ﻿using AutoMapper;
+using HR.LeaveManagement.Application.Constants;
+using HR.LeaveManagement.Application.Contracts.Persistence;
+using HR.LeaveManagement.Application.Persistence.Contracts;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -26,8 +30,7 @@ namespace HR.LeaveManagement.Persistence.Repositories
             _leaveAllocationRepository ??= new LeaveAllocationRepository(_context);
         public ILeaveTypeRepository LeaveTypeRepository => 
             _leaveTypeRepository ??= new LeaveTypeRepository(_context);
-        public ILeaveRequestRepository LeaveRequestRepository => 
-            _leaveRequestRepository ??= new LeaveRequestRepository(_context);
+        public ILeaveRequestRepository LeaveRequestRepository =>  _leaveRequestRepository ??= new LeaveRequestRepository(_context);
         
         public void Dispose()
         {
@@ -38,9 +41,9 @@ namespace HR.LeaveManagement.Persistence.Repositories
         public async Task Save() 
         {
             var username = _httpContextAccessor.HttpContext.User.FindFirst(CustomClaimTypes.Uid)?.Value;
-
-            await _context.SaveChangesAsync(username);
+            //await _context.SaveChangesAsync(username);
+            await _context.SaveChangesAsync();
         }
     }
-    */
+*/    
 }
