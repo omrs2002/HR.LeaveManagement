@@ -1,10 +1,5 @@
 ﻿using HR.LeaveManagement.Application.Contracts.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HR.LeaveManagement.Persistence.Repositories
 {
@@ -27,6 +22,7 @@ namespace HR.LeaveManagement.Persistence.Repositories
         public async Task Delete(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<bool> Exists(int id)
@@ -48,6 +44,7 @@ namespace HR.LeaveManagement.Persistence.Repositories
         public async Task Update(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
     }
 

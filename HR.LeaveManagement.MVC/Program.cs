@@ -1,5 +1,6 @@
 using HR.LeaveManagement.MVC.Contracts;
 using HR.LeaveManagement.MVC.Services;
+using HR.LeaveManagement.MVC.Services.Base;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
