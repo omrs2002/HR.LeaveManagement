@@ -1,4 +1,5 @@
 using HR.LeaveManagement.Application;
+using HR.LeaveManagement.Identity;
 using HR.LeaveManagement.Persistence;
 using Microsoft.OpenApi.Models;
 
@@ -22,8 +23,7 @@ namespace HR.LeaveManagement.Api
             services.ConfigureApplicationServices();
             services.ConfigureInfrastructureServices(Configuration);
             services.ConfigurePersistenceServices(Configuration);
-
-            //services.ConfigureIdentityServices(Configuration);
+            services.ConfigureIdentityServices(Configuration);
 
             services.AddControllers();
 

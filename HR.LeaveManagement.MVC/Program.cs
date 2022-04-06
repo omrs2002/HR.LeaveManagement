@@ -1,41 +1,26 @@
-using HR.LeaveManagement.MVC.Contracts;
-using HR.LeaveManagement.MVC.Services;
-using HR.LeaveManagement.MVC.Services.Base;
-using System.Reflection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddHttpClient<IClient, Client>(c1 => c1.BaseAddress = new Uri("https://localhost:7106"));
-
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
-
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
-
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+namespace HR.LeaveManagement.MVC
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
 }
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.Run();
