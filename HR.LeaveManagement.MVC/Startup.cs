@@ -31,8 +31,10 @@ namespace HR.LeaveManagement.MVC
                     options.LoginPath = new PathString("/users/login");
                 });
 
-            //services.AddTransient<IAuthenticationService, AuthenticationService>();
-
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
+            //home:
+            //services.AddHttpClient<IClient, Client>(cl => cl.BaseAddress = new Uri("https://localhost:7106"));
+            //work:
             services.AddHttpClient<IClient, Client>(cl => cl.BaseAddress = new Uri("https://localhost:7106"));
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
